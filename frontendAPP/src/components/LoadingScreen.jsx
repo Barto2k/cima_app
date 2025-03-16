@@ -15,9 +15,9 @@ export const LoadingScreen = ({ onComplete }) => {
 
                 setTimeout(() => {
                     onComplete();
-                }, 1000);
+                }, 500);
             }
-        }, 100);
+        }, 50);
 
         return () => clearInterval(interval); 
     }, [onComplete]);
