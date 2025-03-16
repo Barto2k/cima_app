@@ -5,8 +5,12 @@
   "scripts": {
     "test": "jest --testTimeout=10000",
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "postinstall": "npm rebuild sqlite3"
   },
+"engines": {
+  "node": ">=14.0.0"
+},
   "author": "",
   "license": "ISC",
   "description": "",
