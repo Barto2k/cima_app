@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export const LoadingScreen = ({ onComplete }) => {
 
     const [text, setText] = useState("");
-    const fullText = "CIMA - Centro de Integracion";
+    const fullText = "CIMA - Centro de Rehabilitacion e Integracion Escolar";
 
     useEffect(() => {
         let index = 0;
