@@ -17,7 +17,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para controlar si el usuario está logueado
 
   return (
-    <Router basename="/cima">
+    <Router basename="/">
       {!isLoaded && <LoadingScreen onComplete={() => setIsLoaded(true)} />}
       <div className={`flex flex-row items-center justify-center min-h-screen transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'} bg-white text-black-100`}>
         {/* Renderiza el Login si el usuario no está logueado */}
