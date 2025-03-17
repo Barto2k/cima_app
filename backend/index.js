@@ -11,17 +11,17 @@ app.get("/", (req, res) => {
   res.send("Backend inicial CIMA Software!");
 });
 
-if (!module.parent) {   // si no es llamado por otro módulo, es decir, si es el módulo principal -> levantamos el servidor
-  const port = process.env.PORT || 4000;   // en producción se usa el puerto de la variable de entorno PORT
-  app.locals.fechaInicio = new Date();
-  app.listen(port, () => {
-    console.log(`sitio escuchando en el puerto ${port}`);
-  });
-}
+// Inicialización de la base de datos con Sequelize
+const { CrearBaseSiNoExiste } = require("./base-orm/pg-init");
 
-require("./base-orm/sqlite-init");  // crear base si no existe
+// Inicializar la base de datos
+CrearBaseSiNoExiste().then(() => {
+  console.log("Base de datos inicializada");
+}).catch(error => {
+  console.error("Error al inicializar la base de datos:", error);
+});
 
-
+// Rutas
 const pacientesRouter = require("./routes/pacientes");
 app.use(pacientesRouter);
 
@@ -30,5 +30,13 @@ app.use(profesionalesRouter);
 
 const seguridadRouter = require("./seguridad/seguridad");
 app.use(seguridadRouter);
+
+if (!module.parent) {   // si no es llamado por otro módulo, es decir, si es el módulo principal -> levantamos el servidor
+  const port = process.env.PORT || 4000;   // en producción se usa el puerto de la variable de entorno PORT
+  app.locals.fechaInicio = new Date();
+  app.listen(port, () => {
+    console.log(`Servidor escuchando en el puerto ${port}`);
+  });
+}
 
 module.exports = app; // para testing

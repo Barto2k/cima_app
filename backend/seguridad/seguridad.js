@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt"); // Para encriptar contraseñas
 const auth = require("./auth");
+require('dotenv').config();
 
 const users = [
   {
