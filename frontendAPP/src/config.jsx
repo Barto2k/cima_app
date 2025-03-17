@@ -1,4 +1,4 @@
-const urlServidor = "http://localhost:4000";
+const urlServidor = process.env.BACKEND_URL;
 const urlResourcePacientes = urlServidor + "/api/pacientes";
 const urlResourceProfesionales = urlServidor + "/api/profesionales";
 
