@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import Logo from "../images/CIMA LOGO.jpeg";
+import Logo from "../images/CIMA_LOGO.jpeg";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
