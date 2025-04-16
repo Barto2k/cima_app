@@ -1,15 +1,19 @@
 // PacientesService.java
 package barto.backendCIMA.Services;
 
+import barto.backendCIMA.DTOs.EspecialidadDTO;
+import barto.backendCIMA.DTOs.PacientesDTO;
 import barto.backendCIMA.Repository.PacientesRepository;
 import barto.backendCIMA.entities.Pacientes;
 import barto.backendCIMA.entities.Evolucion;
+import barto.backendCIMA.entities.Profesionales;
 import barto.backendCIMA.entities.Turnos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PacientesService {
@@ -59,5 +63,21 @@ public class PacientesService {
         Pacientes paciente = pacientesRepository.findById(id).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
         paciente.getTurnos().add(turno);
         return pacientesRepository.save(paciente);
+    }
+
+    public PacientesDTO convertirADTO(Pacientes creado) {
+        PacientesDTO dto = new PacientesDTO();
+        dto.setIdPaciente(creado.getId());
+        dto.setNombre(creado.getNombre());
+        dto.setApellido(creado.getApellido());
+        dto.setDni(creado.getDni());
+        dto.setEvoluciones(creado.getEvoluciones().stream().map(Evolucion::getCodigo).toList());
+        dto.setTurnos(creado.getTurnos().stream().map(Turnos::getId).toList());
+
+        return dto;
+    }
+
+    public List<PacientesDTO> convertirADTOs(List<Pacientes> pacientes) {
+        return pacientes.stream().map(this::convertirADTO).collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 // EvolucionService.java
 package barto.backendCIMA.Services;
 
+import barto.backendCIMA.DTOs.EvolucionDTO;
 import barto.backendCIMA.Repository.EvolucionRepository;
 import barto.backendCIMA.entities.Evolucion;
 import barto.backendCIMA.entities.Turnos;
@@ -46,5 +47,22 @@ public class EvolucionService {
     public void deleteEvolucion(Integer id) {
         Evolucion evolucion = evolucionRepository.findById(id).orElseThrow(() -> new RuntimeException("Evolución no encontrada"));
         evolucionRepository.delete(evolucion);
+    }
+
+    public EvolucionDTO convertirADTO(Evolucion creada) {
+        EvolucionDTO dto = new EvolucionDTO();
+        dto.setId(creada.getCodigo());
+        dto.setFecha(String.valueOf(creada.getFecha()));
+        dto.setEvolucion(creada.getEvolucion());
+        dto.setCodigoEspecialidad(creada.getCodigoEspecialidad().getCodigo());
+        dto.setCodigoPaciente(creada.getCodigoPaciente().getId());
+        dto.setCodigoProfesional(creada.getCodigoProfesional().getId());
+        return dto;
+    }
+
+    public List<EvolucionDTO> convertirADTOs(List<Evolucion> evoluciones) {
+        return evoluciones.stream()
+                .map(this::convertirADTO)
+                .toList();
     }
 }

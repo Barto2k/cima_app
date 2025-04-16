@@ -1,6 +1,7 @@
 // ProfesionalesService.java
 package barto.backendCIMA.Services;
 
+import barto.backendCIMA.DTOs.ProfesionalesDTO;
 import barto.backendCIMA.Repository.ProfesionalesRepository;
 import barto.backendCIMA.entities.Profesionales;
 import barto.backendCIMA.entities.Especialidad;
@@ -68,5 +69,27 @@ public class ProfesionalesService {
         Profesionales profesional = profesionalesRepository.findById(id).orElseThrow(() -> new RuntimeException("Profesional no encontrado"));
         profesional.getTurnos().add(turno);
         return profesionalesRepository.save(profesional);
+    }
+
+    public ProfesionalesDTO convertirADTO(Profesionales creado) {
+        ProfesionalesDTO dto = new ProfesionalesDTO();
+        dto.setId(creado.getId());
+        dto.setNombre(creado.getNombre());
+        dto.setApellido(creado.getApellido());
+        dto.setActivo(creado.getActivo());
+        dto.setMatricula(creado.getMatricula());
+        dto.setEspecialidades(creado.getEspecialidades().stream()
+                .map(Especialidad::getCodigo)
+                .toList());
+        dto.setTurnos(creado.getTurnos().stream()
+                .map(Turnos::getId)
+                .toList());
+        return dto;
+    }
+
+    public List<ProfesionalesDTO> convertirADTOs(List<Profesionales> profesionales) {
+        return profesionales.stream()
+                .map(this::convertirADTO)
+                .toList();
     }
 }

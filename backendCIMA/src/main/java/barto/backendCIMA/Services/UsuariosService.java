@@ -1,6 +1,7 @@
 // UsuariosService.java
 package barto.backendCIMA.Services;
 
+import barto.backendCIMA.DTOs.UsuariosDTO;
 import barto.backendCIMA.Repository.UsuariosRepository;
 import barto.backendCIMA.entities.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuariosService {
@@ -43,5 +45,20 @@ public class UsuariosService {
     public void deleteUsuario(Integer id) {
         Usuarios usuario = usuariosRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         usuariosRepository.delete(usuario);
+    }
+
+    public UsuariosDTO convertirADTO(Usuarios creado) {
+        UsuariosDTO dto = new UsuariosDTO();
+        dto.setId(creado.getId());
+        dto.setNombre(creado.getNombre());
+        dto.setClave(creado.getClave());
+        dto.setRol(creado.getRol());
+        return dto;
+    }
+
+    public List<UsuariosDTO> convertirADTOs(List<Usuarios> usuarios) {
+        return usuarios.stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
     }
 }

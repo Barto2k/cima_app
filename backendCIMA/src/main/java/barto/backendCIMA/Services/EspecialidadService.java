@@ -1,6 +1,7 @@
 // EspecialidadService.java
 package barto.backendCIMA.Services;
 
+import barto.backendCIMA.DTOs.EspecialidadDTO;
 import barto.backendCIMA.Repository.EspecialidadRepository;
 import barto.backendCIMA.entities.Especialidad;
 import barto.backendCIMA.entities.Evolucion;
@@ -66,5 +67,21 @@ public class EspecialidadService {
         Especialidad especialidad = especialidadRepository.findById(id).orElseThrow(() -> new RuntimeException("Especialidad no encontrada"));
         especialidad.getTurnos().add(turno);
         return especialidadRepository.save(especialidad);
+    }
+
+    public EspecialidadDTO convertirADTO(Especialidad creado) {
+        EspecialidadDTO dto = new EspecialidadDTO();
+        dto.setCodigo(creado.getCodigo());
+        dto.setNombre(creado.getNombre());
+        dto.setVigente(creado.getVigente());
+        dto.setProfesionales(creado.getProfesionales().stream().map(Profesionales::getId).toList());
+        dto.setTurnos(creado.getTurnos().stream().map(Turnos::getId).toList());
+        dto.setEvoluciones(creado.getEvoluciones().stream().map(Evolucion::getCodigo).toList());
+
+        return dto;
+    }
+
+    public List<EspecialidadDTO> convertirADTOs(List<Especialidad> especialidades) {
+        return especialidades.stream().map(this::convertirADTO).toList();
     }
 }

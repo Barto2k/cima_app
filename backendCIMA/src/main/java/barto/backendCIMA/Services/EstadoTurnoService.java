@@ -1,6 +1,7 @@
 // EstadoTurnoService.java
 package barto.backendCIMA.Services;
 
+import barto.backendCIMA.DTOs.EstadoTurnoDTO;
 import barto.backendCIMA.Repository.EstadoTurnoRepository;
 import barto.backendCIMA.entities.EstadoTurno;
 import barto.backendCIMA.entities.Turnos;
@@ -22,7 +23,7 @@ public class EstadoTurnoService {
     }
 
     // Obtener todos los estados de turno
-    public List<EstadoTurno> getAllEstadoTurnos() {
+    public List<EstadoTurno> getAllEstadosTurnos() {
         return estadoTurnoRepository.findAll();
     }
 
@@ -49,5 +50,21 @@ public class EstadoTurnoService {
         EstadoTurno estadoTurno = estadoTurnoRepository.findById(id).orElseThrow(() -> new RuntimeException("EstadoTurno no encontrado"));
         estadoTurno.getTurnos().add(turno);
         return estadoTurnoRepository.save(estadoTurno);
+    }
+
+    public EstadoTurnoDTO convertirADTO(EstadoTurno estadoTurno) {
+        EstadoTurnoDTO dto = new EstadoTurnoDTO();
+        dto.setCodigo(estadoTurno.getCodigo());
+        dto.setDescripcion(estadoTurno.getDescripcion());
+        dto.setTurnos(estadoTurno.getTurnos().stream()
+                .map(Turnos::getId)
+                .toList());
+        return dto;
+    }
+
+    public List<EstadoTurnoDTO> convertirADTOs(List<EstadoTurno> estadosTurno) {
+        return estadosTurno.stream()
+                .map(this::convertirADTO)
+                .toList();
     }
 }
